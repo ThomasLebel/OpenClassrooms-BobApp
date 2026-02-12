@@ -5,7 +5,7 @@ on:
   pull_request:
 jobs:
   backend-tests:
-    name: Tests Back-end Java
+    name: Tests Back-end Spring Boot
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -30,3 +30,36 @@ jobs:
         with:
           name: jacoco-report
           path: back/target/site/jacoco/
+          
+  frontend-tests:
+    name: Tests Front-End Angular
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      
+      - name: Set up Node 18
+        uses: actions/setup-node@v6.2.0
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: front/package-lock.json
+      
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run Tests with Coverage
+        run: npm run test --watch=false --code-coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: frontend-coverage-report
+          path: front/coverage/
