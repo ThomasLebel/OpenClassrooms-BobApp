@@ -93,6 +93,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download JaCoCo Report
+        uses: actions/download-artifact@v7
+        with:
+          name: jacoco-report
+          path: back/target/site/jacoco/
+
+      - name: Download Frontend Coverage
+        uses: actions/download-artifact@v7
+        with:
+          name: frontend-coverage-report
+          path: front/coverage/
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
