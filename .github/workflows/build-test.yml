@@ -93,47 +93,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Mise en cache des packages Sonar et Maven pour accélérer l'analyse
-      - name: Cache Sonar packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      # Mise en cache des packages Maven pour accélérer l'analyse
-      - name: Cache Maven packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      # Récupération des artefacts
-      - name: Download JaCoCo Report
-        uses: actions/download-artifact@v7
-        with:
-          name: jacoco-report
-          path: back/target/site/jacoco/
-
-      - name: Download Frontend Coverage
-        uses: actions/download-artifact@v7
-        with:
-          name: frontend-coverage-report
-          path: front/coverage/
-
-      # Setup JAVA 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: maven
-
-      # Lancement de l'analyse SonarQube
-      - name: Run Sonar Analysis
-        run: |
-          mvn -B -f back/pom.xml sonar:sonar \
-            -Dsonar.host.url=https://sonarcloud.io
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
