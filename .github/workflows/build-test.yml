@@ -132,6 +132,8 @@ jobs:
 
       # Lancement de l'analyse SonarQube
       - name: Run Sonar Analysis
-        run: mvn -B -f back/pom.xml sonar:sonar
+        run: |
+          mvn -B -f back/pom.xml sonar:sonar \
+            -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
