@@ -132,8 +132,6 @@ jobs:
 
       # Lancement de l'analyse SonarQube
       - name: Run Sonar Analysis
-        run: |
-          cd back
-          mvn -B sonar:sonar
+        run: mvn -B -f back/pom.xml sonar:sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
