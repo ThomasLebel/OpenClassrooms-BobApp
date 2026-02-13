@@ -25,7 +25,7 @@ jobs:
           
       # Mise en cache des packages Maven
       - name: Cache Maven packages
-        uses: actions/cache@v6
+        uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
