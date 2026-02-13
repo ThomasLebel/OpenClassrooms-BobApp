@@ -92,7 +92,12 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Nécessaire pour SonarCloud
-
+          
+      # Recompiler le backend (sans tests)
+      - name: Build Backend (skip tests)
+        working-directory: back       
+        run: mvn -B clean compile test-compile -DskipTests
+        
       # Télécharger les rapports de couverture des deux projets
       - name: Download JaCoCo Report (Backend)
         uses: actions/download-artifact@v7
