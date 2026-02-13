@@ -80,16 +80,25 @@ jobs:
           name: frontend-coverage-report
           path: front/coverage/
 
-  sonar-analys-front:
-    name: SonarQube Front-End Analysis
+  sonarcloud-analysis:
+    name: Analyse SonarCloud (Backend + Frontend)
     runs-on: ubuntu-latest
-    needs: frontend-tests
-    
+    needs:
+      - backend-tests
+      - frontend-tests
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Nécessaire pour SonarCloud
+
+      # Télécharger les rapports de couverture des deux projets
+      - name: Download JaCoCo Report (Backend)
+        uses: actions/download-artifact@v7
+        with:
+          name: jacoco-report
+          path: back/target/site/jacoco/
 
       - name: Download Frontend Coverage
         uses: actions/download-artifact@v7
@@ -97,6 +106,7 @@ jobs:
           name: frontend-coverage-report
           path: front/coverage/
 
+      # Analyse SonarCloud unique pour tout le projet
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
