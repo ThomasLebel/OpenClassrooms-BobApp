@@ -23,6 +23,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
           
+      # Mise en cache des packages Maven
+      - name: Cache Maven packages
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+          
       # Lance du build, des tests et gébération du rapport de couverture
       - name: Build, Run Tests & Generate Coverage Report
         run: mvn -B clean verify
