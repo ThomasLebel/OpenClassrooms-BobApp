@@ -117,7 +117,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
+#Voir pour utiliser l'action docker build and push 
   docker-publish:
     name: Build and Push Docker images
     runs-on: ubuntu-latest
