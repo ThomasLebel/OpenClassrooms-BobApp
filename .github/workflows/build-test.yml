@@ -2,6 +2,7 @@ name: CI/CD - Tests et Couverture
 
 on:
   push:
+    branches: [main]
   pull_request:
 jobs:
   backend-tests:
@@ -123,6 +124,7 @@ jobs:
     name: Build and Push Docker images
     runs-on: ubuntu-latest
     needs: sonarcloud-analysis
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout
